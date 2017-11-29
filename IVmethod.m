@@ -88,18 +88,28 @@ title('experiment 2 for different s');
 legend('LS','IV(1)','IV(2)','IV(5)');
 hold off
 
-
+[N,M] = size(i0);
 for i=2:4
     
-   [i0lag,i0corr] = xcorr(i0(:,i));
-   [nilag,nicorr] = xcorr(ni(:,i));
-   N = size(i0lag);
+   [i0corr,i0lag] = xcorr(i0(:,i));
+   [nicorr,nilag] = xcorr(ni(:,i));
+  
    figure
    hold on
-   plot(i0lag(N/2:N/2+20),i0corr(N/2:N/2+20));
-   plot(nilag(N/2:N/2+20),nicorr(N/2:N/2+20));
-%    autocorr(i0(:,i),10);
-%    autocorr(ni(:,i),10);
-%    xlim([0 10]);
+   plot(i0lag(N:N+10),i0corr(N:N+10).*var(i0(:,i))./i0corr(N)),xlabel('Lag'),ylabel('Auto-correlation');
+   plot(nilag(N:N+10),nicorr(N:N+10).*var(ni(:,i))./nicorr(N)),xlabel('Lag'),ylabel('Auto-correlation');
+
   hold off
+end
+
+
+for fnoise = [0.999,0.95,0.6]
+    
+    
+ [bgen,agen] = butter(1,fgen);
+ [bnoise,anoise] = butter(2,fnoise);
+ figure
+ freqz(bgen,agen,N),xlim([0 1]);
+ figure
+ freqz(bnoise,anoise,N),xlim([0 1]);
 end
