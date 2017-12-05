@@ -2,6 +2,7 @@ clear all;
 close all;
 N_est = 1000;
 N_val = 10000;
+K = zeros(N_est);
 D_est = zeros(N_est);
 D_val = zeros(N_val);
 sigma_ny = 0.5;
@@ -15,6 +16,17 @@ y = y0 + ny;
 figure();
 freqz(b,a);
 ylim([-5,1]);
+
+for i = 1:N
+    for j = 1:N
+      if (j>i)
+          K(i,j) = 0;
+      else
+          K(i,j) = u0(i-j+1,1);
+      end      
+    end
+end
+
 
 % Linear Least Squares
 for i = 1:N_est
