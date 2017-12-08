@@ -8,16 +8,18 @@ N = 5000;
 fgen = 0.1;
 exper = 1000;
 figure;
-
+fnoise = 0.95;
 
 for j=1:exper
     e1 = randn(N,1);
-
+%        [bgen,agen] = butter(1,fgen);
+%         i0(:,1) = (sigma_i0)*filter(bgen,agen,e1/std(filter(bgen,agen,e1)));
     i0(:,1) = (sigma_i0)*e1/std(e1);
 
     e2 = randn(N,1);
-
-    ni(:,1) = (sigma_ni )* e2/std(e2);
+%         [bnoise,anoise] = butter(2,fnoise);
+%         ni(:,1) = (sigma_ni )* filter(bnoise, anoise, e2/std(filter(bnoise, anoise, e2)));
+   ni(:,1) = (sigma_ni )* e2/std(e2);
     nu = rand(N,1);
     nu = (sigma_nu )*nu/std(nu);
 
