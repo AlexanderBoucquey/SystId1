@@ -12,14 +12,16 @@ fnoise = 0.95;
 
 for j=1:exper
     e1 = randn(N,1);
-
-    i0(:,1) = (sigma_i0)*e1/std(e1);
+       [bgen,agen] = butter(1,fgen);
+        i0(:,1) = (sigma_i0)*filter(bgen,agen,e1/std(filter(bgen,agen,e1)));
+   % i0(:,1) = (sigma_i0)*e1/std(e1);
 
     e2 = randn(N,1);
-
-    ni(:,1) = (sigma_ni )* e2/std(e2);
-    e3 = randn(N,1);
-    nu = (sigma_nu )*e3/std(e3);
+%         [bnoise,anoise] = butter(2,fnoise);
+%         ni(:,1) = (sigma_ni )* filter(bnoise, anoise, e2/std(filter(bnoise, anoise, e2)));
+   ni(:,1) = (sigma_ni )* e2/std(e2);
+    nu = rand(N,1);
+    nu = (sigma_nu )*nu/std(nu);
 
     i = i0(:,1) + ni(:,1);
     u = i0(:,1)*R_0 + nu;
@@ -38,7 +40,7 @@ histogram(R_EIV,100,'Displaystyle','stairs','Normalization','pdf');
  
  
 
-axis([950 1050 0 0.3]);
+axis([950 1050 0 0.2]);
 ylabel('PDF(R)'),xlabel('R');
 %title('experiment 1 for different fnoise');
 legend('LS','EIV');
