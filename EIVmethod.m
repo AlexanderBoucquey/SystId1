@@ -34,11 +34,11 @@ hold on
    
 histogram(R_LS,60,'Displaystyle','stairs','Normalization','pdf');
 histogram(R_EIV,60,'Displaystyle','stairs','Normalization','pdf');
-   
+
  
  
 
-axis([980 1010 0 0.3]);
+%axis([980 1010 0 0.3]);
 ylabel('PDF(R)'),xlabel('R');
 %title('experiment 1 for different fnoise');
 legend('LS','EIV');
