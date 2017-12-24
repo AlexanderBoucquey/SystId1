@@ -102,14 +102,21 @@ for i=2:4
   hold off
 end
 
-
+%%
 for fnoise = [0.999,0.95,0.6]
     
     
  [bgen,agen] = butter(1,fgen);
  [bnoise,anoise] = butter(2,fnoise);
  figure
- freqz(bgen,agen,N),xlim([0 1]);
- figure
- freqz(bnoise,anoise,N),xlim([0 1]);
+ 
+ [h1,w1] = freqz(bgen,agen,N);
+ plot(w1/pi/2,db(h1),'.-')
+ hold on
+ %figure
+ [h2,w2] = freqz(bnoise,anoise,N);
+ plot(w2/pi/2,db(h2),'.-')
+ ylim([-30 10]),xlim([0 0.5]);
+ xlabel('f/fs'),ylabel('Filter [dB]');
+ hold off
 end
