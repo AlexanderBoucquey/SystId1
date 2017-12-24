@@ -1,14 +1,16 @@
-clear all;
+clear variables;
 close all;
+
 % initaliseer de parameters.
 N_est = 1000;
 N_val = 10000;
 K_est = zeros(N_est);
 D_est = zeros(N_est);
 D_val = zeros(N_val);
-sigma_ny = 0.05;
+sigma_ny = 0.5;
 sigma_u0 = 1;
 I = 100;
+grid = linspace(1,I,I);
 
 % Maak de noise, de filter coëfficienten, de ingang en uitgangssignalen.
 ny_est = randn(N_est,1);
@@ -38,10 +40,11 @@ for j = 1:I
     K_est = toeplitz(u0_est(:,1), [u0_est(1,1) zeros(1,I)] );
 end
 
-% Make y_hoed voor I = 1 tot 100.
+% Maak y_hoed voor I = 1 tot 100.
 g_est = K_est\y_est;
 g_est = g_est';
-figure()
+
+% Bereken V_ls en V_aic voor de estimation data set.
 V_ls = zeros(I,1);
 V_aic = zeros(I,1);
 for t = 1:I
@@ -50,20 +53,18 @@ for t = 1:I
     for i = 1:N_est
         V_ls(t,1) = V_ls(t,1) + (y_est(i,1)-yh(i,1))^2;
     end
-%     V_ls(t,1) = V_ls(t,1)/(N_est);
     V_aic(t,1) = V_ls(t,1)*(1+2*t/N_est)/(N_est*sigma_ny^2);
     V_ls(t,1) = V_ls(t,1)/(N_est*sigma_ny^2);
 end
- 
-grid = linspace(1,100);
+
+% Plot V_est en V_aic.
+figure()
 plot(grid,V_ls(:,1),'--');
-xlim([0 100]);
-ylim([0.7 1.2]);
 hold on
 plot(grid,V_aic(:,1),'-');
-xlim([0 100]);
-ylim([0.7 1.2]);
 hold on
+
+% Bereken V_ls en V_0 voor de validation data set.
 V_ls = zeros(I,1);
 V_0 = zeros(I,1);
 for t = 1:I
@@ -77,10 +78,19 @@ for t = 1:I
     V_ls(t,1) = V_ls(t,1)/(N_val*sigma_ny^2);
     V_0(t,1) = sqrt(V_0(t,1)/(N_val*sigma_ny^2));
 end
+
+% Plot V_val
 plot(grid,V_ls(:,1), '-.');
 legend('est', 'AIC','val', 'Location', 'southeast');
+xlabel('Order');
+ylabel('Cost');
+xlim([0 I]);
+ylim([0.7 1.2]);
 
+% Plot V_0
 figure()
 plot(grid,V_0(:,1), '-');
 ylim([0 1]);
-xlim([0 100]);
+xlim([0 I]);
+xlabel('Order');
+ylabel('Normalized rms');
