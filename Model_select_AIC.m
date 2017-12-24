@@ -11,9 +11,9 @@ sigma_u0 = 1;
 I = 100;
 
 % Maak de noise, de filter coëfficienten, de ingang en uitgangssignalen.
-ny_est = rand(N_est,1);
+ny_est = randn(N_est,1);
 ny_est = sigma_ny*ny_est/std(ny_est);
-ny_val = rand(N_val,1);
+ny_val = randn(N_val,1);
 ny_val = sigma_ny*ny_val/std(ny_val);
 [b,a] = cheby1(3,0.5,[2*0.15 2*0.3]);
 
@@ -50,14 +50,19 @@ for t = 1:I
     for i = 1:N_est
         V_ls(t,1) = V_ls(t,1) + (y_est(i,1)-yh(i,1))^2;
     end
-    V_ls(t,1) = V_ls(t,1)/N_est;
-    V_aic(t,1) = V_ls(t,1)*(1+2*t/N_est);
+%     V_ls(t,1) = V_ls(t,1)/(N_est);
+    V_aic(t,1) = V_ls(t,1)*(1+2*t/N_est)/(N_est*sigma_ny^2);
+    V_ls(t,1) = V_ls(t,1)/(N_est*sigma_ny^2);
 end
  
 grid = linspace(1,100);
 plot(grid,V_ls(:,1),'--');
+xlim([0 100]);
+ylim([0.7 1.2]);
 hold on
 plot(grid,V_aic(:,1),'-');
+xlim([0 100]);
+ylim([0.7 1.2]);
 hold on
 V_ls = zeros(I,1);
 V_0 = zeros(I,1);
@@ -69,12 +74,13 @@ for t = 1:I
         V_ls(t,1) = V_ls(t,1) + (y_val(i,1)-yh(i,1))^2;
         V_0(t,1) = V_0(t,1) + (y0_val(i,1)-yh(i,1))^2;
     end
-    V_ls(t,1) = V_ls(t,1)/N_val;
+    V_ls(t,1) = V_ls(t,1)/(N_val*sigma_ny^2);
     V_0(t,1) = sqrt(V_0(t,1)/(N_val*sigma_ny^2));
 end
 plot(grid,V_ls(:,1), '-.');
-legend('est', 'AIC','val');
+legend('est', 'AIC','val', 'Location', 'southeast');
 
 figure()
 plot(grid,V_0(:,1), '-');
 ylim([0 1]);
+xlim([0 100]);
