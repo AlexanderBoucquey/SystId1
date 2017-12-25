@@ -24,5 +24,5 @@ for i=[1,2,5,10,20,100]
     dr = (m * i+ i + n * i)/(m*n)*100;    
     A1 = U(:,1:i)*S(1:i,1:i)*V(:,1:i)';
     imshow(A1);  
-    title(['data reduction ' num2str(dr) '%']);
+%     title(['data reduction ' num2str(dr) '%']);
 end
