@@ -31,22 +31,40 @@ for i=1:18
 end
 Wp = W(1:9,:);
 Wf = W(10:18,:);
-[U,S,V] = svd(W);
-[Up,Sp,Vp] = svd(Wp);
-[Uf,Sf,Vf] = svd(Wf);
-[U,S,V] = svd(W);
-G = U(:,1:13)*S(1:13,1:13)^(1/2);
-D = S(1:13,1:13)^(1/2)*(V(:,1:13)');
-C = U(:,1:13)*S(1:13,1:13)^(1/2);
-C = C(1:3,:);
-B = D(:,1);
-A = G(1:end-1,:)\G(2:end,:);
-%zie slides vanaf 300
-x(:,1) = B;
-y2(:,1) = C*B;
-for k=2:21
-    x(:,k) = A*x(:,k-1) + B*Data(k,2)- B*Data(k,3);
-    y2(:,k) = C*x(:,k);
+a = ones(1,9)/3;
 
+x = Wp'*a';
+b = Wf'\x;
+x2 = Wf'*b;
+a2 = Wp'\x2;
+x3 = Wp'*a2;
+for i=1:1000
 
+    b = Wf'\x3;
+    x2 = Wf'*b;
+    a2 = Wp'\x2;
+    x3 = Wp'*a2; 
 end
+
+system = [x3(1:end-1) Data(4:21,2) Data(4:21,3)]\[x3(2:end) Data(4:21,4)];
+
+% [U,S,V] = svd(W);
+% [Up,Sp,Vp] = svd(Wp);
+% [Uf,Sf,Vf] = svd(Wf);
+% [U,S,V] = svd(W);
+% G = U(:,1:13)*S(1:13,1:13)^(1/2);
+% D = S(1:13,1:13)^(1/2)*(V(:,1:13)');
+% C = U(:,1:13)*S(1:13,1:13)^(1/2);
+% C = C(1:3,:);
+% B = D(:,1);
+% A = G(1:end-1,:)\G(2:end,:);
+% %zie slides vanaf 300
+% x(:,1) = B;
+% y2(:,1) = C*B;
+% for k=2:21
+%     x(:,k) = A*x(:,k-1) + B*Data(k,2)- B*Data(k,3);
+%     y2(:,k) = C*x(:,k);
+% 
+% 
+% end
+
