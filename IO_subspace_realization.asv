@@ -33,15 +33,14 @@ Wp = W(1:9,:);
 Wf = W(10:18,:);
 x = Data(4:22,4)/0.999;
 a4 = Wp'\x;
-b4 = Wf'\x;
-test2 = Wp'*a4-Wf'*b4;
-% a = ones(1,9)/3;
-% 
-% x = Wp'*a';
-% b = Wf'\x;
-% x2 = Wf'*b;
-% a2 = Wp'\x2;
-% x3 = Wp'*a2;
+b4 =
+a = ones(1,9)/3;
+
+x = Wp'*a';
+b = Wf'\x;
+x2 = Wf'*b;
+a2 = Wp'\x2;
+x3 = Wp'*a2;
 % for i=1:1000
 % 
 %     b = Wf'\x3;
@@ -50,7 +49,7 @@ test2 = Wp'*a4-Wf'*b4;
 %     x3 = Wp'*a2; 
 % end
 % test = a2'*Wp;
-system = [x(1:end-1) Data(4:21,2) Data(4:21,3)]\[x(2:end) Data(4:21,4)];
+system = [x3(1:end-1) Data(4:21,2) Data(4:21,3)]\[x3(2:end) Data(4:21,4)];
 
 % [U,S,V] = svd(W);
 % [Up,Sp,Vp] = svd(Wp);
