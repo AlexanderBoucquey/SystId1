@@ -12,7 +12,7 @@ sigma_u0 = 1;
 I = 100;
 grid = linspace(1,I,I);
 
-% Maak de noise, de filter coëfficienten, de ingang en uitgangssignalen.
+% Maak de noise, de filter coï¿½fficienten, de ingang en uitgangssignalen.
 ny_est = randn(N_est,1);
 ny_est = sigma_ny*ny_est/std(ny_est);
 ny_val = randn(N_val,1);
@@ -35,7 +35,7 @@ figure();
 freqz(b,a);
 ylim([-5,1]);
 
-% Stel de matrix G (implus responsie) op.
+% Stel de matrix G (impuls responsie) op.
 for j = 1:I
     K_est = toeplitz(u0_est(:,1), [u0_est(1,1) zeros(1,I)] );
 end
