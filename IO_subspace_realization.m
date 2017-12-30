@@ -31,22 +31,46 @@ for i=1:18
 end
 Wp = W(1:9,:);
 Wf = W(10:18,:);
-[U,S,V] = svd(W);
-[Up,Sp,Vp] = svd(Wp);
-[Uf,Sf,Vf] = svd(Wf);
-[U,S,V] = svd(W);
-G = U(:,1:13)*S(1:13,1:13)^(1/2);
-D = S(1:13,1:13)^(1/2)*(V(:,1:13)');
-C = U(:,1:13)*S(1:13,1:13)^(1/2);
-C = C(1:3,:);
-B = D(:,1);
-A = G(1:end-1,:)\G(2:end,:);
-%zie slides vanaf 300
-x(:,1) = B;
-y2(:,1) = C*B;
-for k=2:21
-    x(:,k) = A*x(:,k-1) + B*Data(k,2)- B*Data(k,3);
-    y2(:,k) = C*x(:,k);
+x = Data(4:22,4)/0.999;
+a4 = Wp'\x;
+b4 = Wf'\x;
+test2 = Wp'*a4-Wf'*b4;
+% a = ones(1,9)/3;
+% 
+% x = Wp'*a';
+% b = Wf'\x;
+% x2 = Wf'*b;
+% a2 = Wp'\x2;
+% x3 = Wp'*a2;
+% for i=1:1000
+% 
+%     b = Wf'\x3;
+%     x2 = Wf'*b;
+%     a2 = Wp'\x2;
+%     x3 = Wp'*a2; 
+% end
+% test = a2'*Wp;
+system = [x(1:end-1) Data(4:21,2) Data(4:21,3)]\[x(2:end) Data(4:21,4)];
+
+% [U,S,V] = svd(W);
+% [Up,Sp,Vp] = svd(Wp);
+% [Uf,Sf,Vf] = svd(Wf);
+% [U,S,V] = svd(W);
+% G = U(:,1:13)*S(1:13,1:13)^(1/2);
+% D = S(1:13,1:13)^(1/2)*(V(:,1:13)');
+% C = U(:,1:13)*S(1:13,1:13)^(1/2);
+% C = C(1:3,:);
+% B = D(:,1);
+% A = G(1:end-1,:)\G(2:end,:);
+% %zie slides vanaf 300
+% x(:,1) = B;
+% y2(:,1) = C*B;
+x4(1) = 1000;
+y(1)= 990;
+for k=2:23
+    x4(k) = system(1,1)*x4(k-1) + system(2,1)*Data(k-1,2) + system(3,1)*Data(k-1,3);
+    y(k) = system(1,2)*x4(k);
 
 
 end
+
