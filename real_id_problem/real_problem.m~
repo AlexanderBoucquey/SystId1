@@ -6,7 +6,7 @@ close all
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % White noise
-% u = randn(1000,1);
+%u = randn(1000,1);
 
 % Zero input signal
 % u = zeros(1000,1);
@@ -17,17 +17,17 @@ close all
 % u = filter(b_butter,a_butter,u);
 
 % Sinus wave
-F = 20; % Frequentie
+% F = 20; % Frequentie
 % grid = 0:F*2*pi/1000:F*2*pi;
-% u = sin(grid)';
+% u = sin(grid);
 
 % Step function
-u = ones(1000,1);
+% u = ones(1000,1);
 % u(1) = 0;
 
 % Impulse function
-% u = zeros(1000,1);
-% u(1) = 1;
+u = zeros(1000,1);
+u(1) = 1;
 
 
 
@@ -93,26 +93,13 @@ end
 
 figure()
 plot(grid,V_aic(:,1),'-');
-%impulsresponsfunctie
+%impuls
 figure()
 IR = cra([y u]);
 
 
-%fft dit klopt nog niet
-L = 1000;
-Y = fft(y);
-P2 = abs(Y/L);
-P1 = P2(1:L/2+1);
-P1(2:end-1) = 2*P1(2:end-1);
-f = F*(0:(L/2))/L*5;
-
-% Plot figure
-figure
-semilogy(f,P1)
-
-
 %verschillende modellen
-sysarx = arx([y u],[ 100 100 0]);
+sysarx = arx([y u],[10 10 0]);
 sysarmax = armax([y u],[10 10 10 0]);
 sysoe = oe([y u], [10 10 0]);
 sysbj = bj([y u],[10 10 10 10 0]);
