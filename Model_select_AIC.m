@@ -12,7 +12,7 @@ sigma_u0 = 1;
 I = 100;
 grid = linspace(1,I,I);
 
-% Maak de noise, de filter coï¿½fficienten, de ingang en uitgangssignalen.
+% Maak de noise, de filter coëfficienten, de ingang en uitgangssignalen.
 ny_est = randn(N_est,1);
 ny_est = sigma_ny*ny_est/std(ny_est);
 ny_val = randn(N_val,1);

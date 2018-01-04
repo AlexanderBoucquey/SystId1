@@ -82,45 +82,6 @@ title('Output signaal, gedetrend en pkshaved');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Identificeren van model
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Schat aantal parameters mbv aic
-N = L;
-I = 900;
-grid = linspace(1,I,I);
-
-% Bereken de Toeplitz matrix
-for j = 1:I
-    K = toeplitz(u(:,1), [u(1,1) zeros(1,I-1)] );
-end
-g = K\y;
-g = g';
-
-% Bereken de Kost functie AIC.
-V_ls = zeros(I,1);
-V_aic = zeros(I,1);
-for t = 1:I
-    yh = filter(g(1,1:t),1,u);
-    V_ls(t,1) = 0;
-    for i = 1:size(yh(:,1))
-        V_ls(t,1) = V_ls(t,1) + (y(i,1)-yh(i,1))^2;
-    end
-    V_aic(t,1) = V_ls(t,1)*(1+2*t/N)/(N*sigma_u^2);
-    V_ls(t,1) = V_ls(t,1)/(N*sigma_u^2);
-end
-
-figure()
-semilogy(grid,V_ls(:,1),'--');
-hold on
-semilogy(grid,V_aic(:,1),'-');
-xlabel('Order');
-ylabel('Cost');
-xlim([0 I]);
-legend('est', 'AIC');
-title('Aantal param schatten');
-%impulsresponsfunctie
-% figure()
-% IR = cra([y u]);
-
-
 % FFT 
 Y = fft(y);
 P2 = abs(Y/L);
@@ -137,9 +98,24 @@ ylabel('|P1(f)|')
 xlim([0 100]);
 hold off
 
-%verschillende modellen
-% sysarx = arx([y u],[ 100 100 0]);
-% sysarmax = armax([y u],[10 10 10 0]);
-% sysoe = oe([y u], [10 10 0]);
-% sysbj = bj([y u],[10 10 10 10 0]);
-% save real_problem;
+% Verschillende modellen
+sysarx = arx_model(u,y);
+sysarmax = armax_model(u,y);
+sysoe = oe_model(u,y);
+sysbj = bj_model(u,y);
+
+% Kijk na hoe correct deze modellen gefit worden d.m.v. het fit rapport;
+arx_fit = sysarx.Report.Fit.FitPercent;
+armax_fit = sysarmax.Report.Fit.FitPercent;
+oe_fit = sysoe.Report.Fit.FitPercent;
+bj_fit = sysbj.Report.Fit.FitPercent;
+
+% Plot de verschillende opties
+figure()
+fits = [arx_fit armax_fit oe_fit bj_fit];
+bar(fits)
+title('Verschillende fit opties');
+ylabel('Procentuele fitting');
+legend('arx',  'armax', 'oe', 'bj');
+
+save real_problem;
