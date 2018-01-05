@@ -58,6 +58,7 @@ y = exercise2(u);
 figure()
 plot(y,'r');
 title('Output signaal');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Preprocessing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,8 +68,14 @@ title('Output signaal');
 % Preprocessing stap 2: Verwijderen pieken).
 y1 = pkshave(y, [25,35], 1);
 
+
+b = ones(1,10)/10;
+
+y2 = filtfilt(b,1,y);
+figure
+plot(y);
 % Preprocessing stap 3: Verwijderen van trends.
-y = detrend(y1);
+y = detrend(y);
 
 
 figure()
@@ -97,25 +104,25 @@ xlabel('f (Hz)')
 ylabel('|P1(f)|')
 xlim([0 100]);
 hold off
+% 
+% % Verschillende modellen
+% sysarx = arx_model(u,y);
+% sysarmax = armax_model(u,y);
+% sysoe = oe_model(u,y);
+% sysbj = bj_model(u,y);
+% 
+% % Kijk na hoe correct deze modellen gefit worden d.m.v. het fit rapport;
+% arx_fit = sysarx.Report.Fit.FitPercent;
+% armax_fit = sysarmax.Report.Fit.FitPercent;
+% oe_fit = sysoe.Report.Fit.FitPercent;
+% bj_fit = sysbj.Report.Fit.FitPercent;
+% 
+% % Plot de verschillende opties
+% figure()
+% fits = [arx_fit armax_fit oe_fit bj_fit];
+% bar(fits)
+% title('Verschillende fit opties');
+% ylabel('Procentuele fitting');
+% legend('arx',  'armax', 'oe', 'bj');
 
-% Verschillende modellen
-sysarx = arx_model(u,y);
-sysarmax = armax_model(u,y);
-sysoe = oe_model(u,y);
-sysbj = bj_model(u,y);
-
-% Kijk na hoe correct deze modellen gefit worden d.m.v. het fit rapport;
-arx_fit = sysarx.Report.Fit.FitPercent;
-armax_fit = sysarmax.Report.Fit.FitPercent;
-oe_fit = sysoe.Report.Fit.FitPercent;
-bj_fit = sysbj.Report.Fit.FitPercent;
-
-% Plot de verschillende opties
-figure()
-fits = [arx_fit armax_fit oe_fit bj_fit];
-bar(fits)
-title('Verschillende fit opties');
-ylabel('Procentuele fitting');
-legend('arx',  'armax', 'oe', 'bj');
-
-save real_problem;
+save real_problem_2;

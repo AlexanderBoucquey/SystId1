@@ -58,6 +58,7 @@ y = exercise2(u);
 figure()
 plot(y,'r');
 title('Output signaal');
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Preprocessing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,8 +68,14 @@ title('Output signaal');
 % Preprocessing stap 2: Verwijderen pieken).
 y1 = pkshave(y, [25,35], 1);
 
+
+b = ones(1,10)/10;
+
+y2 = filtfilt(b,1,y1);
+% figure
+% plot(y);
 % Preprocessing stap 3: Verwijderen van trends.
-y = detrend(y1);
+y = detrend(y2);
 
 
 figure()
@@ -78,6 +85,8 @@ plot(y,'r');
 legend('pkshave','detrend');
 title('Output signaal, gedetrend en pkshaved');
 
+figure()
+plot(y)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Identificeren van model
@@ -97,8 +106,8 @@ xlabel('f (Hz)')
 ylabel('|P1(f)|')
 xlim([0 100]);
 hold off
-
-% Verschillende modellen
+% 
+% % Verschillende modellen
 sysarx = arx_model(u,y);
 sysarmax = armax_model(u,y);
 sysoe = oe_model(u,y);
@@ -118,4 +127,4 @@ title('Verschillende fit opties');
 ylabel('Procentuele fitting');
 legend('arx',  'armax', 'oe', 'bj');
 
-save real_problem;
+save real_problem_2;
