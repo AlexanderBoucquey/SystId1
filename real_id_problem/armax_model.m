@@ -1,15 +1,15 @@
 function [ sysarmax] = armax_model( u, y )
 % Probeer ideaal aantal parameters te berekenen mbv van het aic criterium
 % Initialisatie van aantal parameters
-na = 1:4;
-nb = 1:4;
-nc = 1:4;
-nk = 1:4;
+na = [10 20 30 40];
+nb = [10 20 30 40];
+nc = [10 20 30 40];
+nk = [10 20 30 40];
 
 % Estimate BJ models with all possible combinations of chosen order ranges.
 NN = struc(na,nb,nc,nk); 
 models = cell(size(NN,1),1);
-for ct = 1:size(NN,1)
+parfor ct = 1:size(NN,1)
    models{ct} = armax([y u], NN(ct,:), 0);
 end
 % Compute the small sample-size corrected AIC values for the models,
@@ -19,12 +19,5 @@ V = aic(models{:},'AICc');
 
 % Return the optimal model that has the smallest AICc value.
 sysarmax = models{I};
-
-% Plot the aic criterium
-figure()
-plot(V);
-title('armax aic criterium');
-
-
 end
 

@@ -26,15 +26,15 @@ t = (0:L-1)*T;  % Tijdsvector
 % u = filter(b_butter,a_butter,u);
 
 % Sinus wave
-u = sin(2*pi*F*t');
+% u = sin(2*pi*F*t');
 
 % Step function
 % u = ones(1000,1);
 % u(1) = 0;
 
 % Impulse function
-% u = zeros(1000,1);
-% u(1) = 1;
+u = zeros(1000,1);
+u(1) = 1;
 
 
 
@@ -99,23 +99,43 @@ xlim([0 100]);
 hold off
 
 % Verschillende modellen
+tic
 sysarx = arx_model(u,y);
+arx_time = toc;
+
+tic
 sysarmax = armax_model(u,y);
+armax_time = toc;
+
+tic
 sysoe = oe_model(u,y);
+oe_time = toc;
+
+tic
 sysbj = bj_model(u,y);
+bj_time = toc;
 
 % Kijk na hoe correct deze modellen gefit worden d.m.v. het fit rapport;
+
 arx_fit = sysarx.Report.Fit.FitPercent;
 armax_fit = sysarmax.Report.Fit.FitPercent;
 oe_fit = sysoe.Report.Fit.FitPercent;
 bj_fit = sysbj.Report.Fit.FitPercent;
 
+
 % Plot de verschillende opties
 figure()
 fits = [arx_fit armax_fit oe_fit bj_fit];
-bar(fits)
+bar(1,arx_fit )
+hold on
+bar(2,armax_fit)
+hold on
+bar(3,oe_fit)
+hold on
+bar(4,bj_fit)
 title('Verschillende fit opties');
 ylabel('Procentuele fitting');
-legend('arx',  'armax', 'oe', 'bj');
+legend('arx', 'armax', 'oe', 'bj');
+ylim([0 100]);
 
 save real_problem;
