@@ -19,14 +19,14 @@ t = (0:L-1)*T;  % Tijdsvector
 % u = zeros(1000,1);
 
 % Colored noise
-% sigma_u = 0.5;
-% u = randn(1000,1);
-% u = sigma_u*u;
-% [b_butter, a_butter] = butter(4,0.2,'high');
-% u = filter(b_butter,a_butter,u);
+sigma_u = 0.5;
+u = randn(1000,1);
+u = sigma_u*u;
+[b_butter, a_butter] = butter(4,0.2,'high');
+u = filter(b_butter,a_butter,u);
 
 % Sinus wave
-u = sin(2*pi*F*t');
+% u = sin(2*pi*F*t');
 
 % Step function
 % u = ones(1000,1);
@@ -55,7 +55,7 @@ hold off
 y = exercise2(u);
 %poly = spline(u,y);
 
-% figure()
+figure()
 plot(y,'r');
 title('Output signaal');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,7 @@ title('Output signaal');
 y1 = pkshave(y, [25,35], 1);
 
 % Preprocessing stap 3: Verwijderen van trends.
-b = ones(1,10)/10;
+b = ones(1,7)/7;
 
 y2 = filtfilt(b,1,y1);
 
