@@ -18,6 +18,7 @@ t = (0:L-1)*T;  % Tijdsvector
 % Zero input signal
 % u = zeros(1000,1);
 
+
 % Colored noise
 % sigma_u = 0.5;
 % u = randn(1000,1);
@@ -26,11 +27,11 @@ t = (0:L-1)*T;  % Tijdsvector
 % u = filter(b_butter,a_butter,u);
 
 % Sinus wave
-u = sin(2*pi*F*t');
+% u = sin(2*pi*F*t');
 
 % Step function
-% u = ones(1000,1);
-% u(1) = 0;
+u = ones(1000,1);
+%u(1) = 0;
 
 % Impulse function
 % u = zeros(1000,1);
