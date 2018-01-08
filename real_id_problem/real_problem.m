@@ -68,7 +68,11 @@ title('Output signaal');
 y1 = pkshave(y, [25,35], 1);
 
 % Preprocessing stap 3: Verwijderen van trends.
-y = detrend(y1);
+b = ones(1,10)/10;
+
+y2 = filtfilt(b,1,y1);
+
+y = detrend(y2);
 
 
 figure()
