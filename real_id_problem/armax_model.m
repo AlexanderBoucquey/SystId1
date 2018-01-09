@@ -4,7 +4,7 @@ function [ sysarmax] = armax_model( u, y )
 na = [10 20 30 40];
 nb = [10 20 30 40];
 nc = [10 20 30 40];
-nk = [10 20 30 40];
+nk = [0 10 20 30 40];
 
 % Estimate BJ models with all possible combinations of chosen order ranges.
 NN = struc(na,nb,nc,nk); 

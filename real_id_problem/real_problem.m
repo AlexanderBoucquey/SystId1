@@ -12,8 +12,7 @@ t = (0:L-1)*T;  % Tijdsvector
 
 
 % White noise
-% sigma_u = 0.5;
-% u = randn(1000,1);
+u = randn(1000,1);
 
 % Zero input signal
 % u = zeros(1000,1);
@@ -30,7 +29,7 @@ t = (0:L-1)*T;  % Tijdsvector
 % u = sin(2*pi*F*t');
 
 % Step function
-u = ones(1000,1);
+% u = ones(1000,1);
 %u(1) = 0;
 
 % Impulse function
@@ -62,19 +61,19 @@ title('Output signaal');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Preprocessing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Preprocessing stap 1: Verwijderen van delay.
-% ir = cra([y,u],20,10,1);
-% [~,R,~] = cra([y,u]);
-% Preprocessing stap 2: Verwijderen pieken).
+% Preprocessing stap 1: Verwijderen pieken).
 y1 = pkshave(y, [25,35], 1);
 
-% Preprocessing stap 3: Verwijderen van trends.
-b = ones(1,10)/10;
-
+% Preprocessing stap 3: Laagdoorlaat filter om hoogfrequente ruis
+% te elimineren.
+b = ones(1,2)/2;
 y2 = filtfilt(b,1,y1);
 
+% Preprocessing stap 2: Verwijderen van trends.
 y = detrend(y2);
 
+% Bekijk de kwaliteit in mate van standaarddeviatie
+arx_std = std(y)/std(u);
 
 figure()
 plot(y1,'b');
@@ -116,7 +115,6 @@ armax_fit = sysarmax.Report.Fit.FitPercent;
 oe_fit = sysoe.Report.Fit.FitPercent;
 bj_fit = sysbj.Report.Fit.FitPercent;
 
-
 % Plot de verschillende opties
 figure()
 bar(1,arx_fit )
@@ -131,4 +129,25 @@ ylabel('Procentuele fitting');
 legend('arx', 'armax', 'oe', 'bj');
 ylim([0 100]);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Valideren van model
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Simulatie doormiddel van het model
+[~,arx_fit_sim,~] = compare([y u],sysarx);
+[~,armax_fit_sim,~] = compare([y u],sysarmax);
+[~,oe_fit_sim,~] = compare([y u],sysoe);
+[~,bj_fit_sim,~] = compare([y u],sysbj);
+
+% Prediction doormiddel van het model
+[~,arx_fit_pre,~] = compare([y u],sysarx,1);
+[~,armax_fit_pre,~] = compare([y u],sysarmax,1);
+[~,oe_fit_pre,~] = compare([y u],sysoe,1);
+[~,bj_fit_pre,~] = compare([y u],sysbj,1);
+
+% Residual analyses
+[E_arx, R_arx] = resid([y u], sysarx);
+[E_armax, R_armax] = resid([y u], sysarmax);
+[E_oe, R_oe] = resid([y u], sysoe);
+[E_bj, R_bj] = resid([y u], sysbj);
 save real_problem;

@@ -5,7 +5,7 @@ nb = [10 20 30 40];
 nc = [10 20 30 40];
 nd = [10 20 30 40];
 nf = [10 20 30 40];
-nk = [10 20 30 40];
+nk = [0 10 20 30 40];
 
 % Estimate BJ models with all possible combinations of chosen order ranges.
 NN = struc(nb,nc,nd,nf,nk); 

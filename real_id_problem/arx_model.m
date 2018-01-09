@@ -3,7 +3,7 @@ function [ sysarx ] = arx_model( u, y )
 % Initialisatie van aantal parameters
 na = [10 20 30 40];
 nb = [10 20 30 40];
-nk = [10 20 30 40];
+nk = [0 10 20 30 40];
 
 % Estimate arx models with all possible combinations of chosen order ranges.
 NN = struc(na,nb,nk); 

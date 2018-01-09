@@ -3,7 +3,7 @@ function [ sysoe ] = oe_model( u, y)
 % Initialisatie van aantal parameters
 nf = [10 20 30 40];
 nb = [10 20 30 40];
-nk = [10 20 30 40];
+nk = [0 10 20 30 40];
 
 % Estimate OE models with all possible combinations of chosen order ranges.
 NN = struc(nf,nb,nk); 
