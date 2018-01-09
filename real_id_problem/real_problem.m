@@ -103,51 +103,51 @@ xlim([0 100]);
 hold off
 
 % Verschillende modellen
-sysarx = arx_model(u,y);
-sysarmax = armax_model(u,y);
+% sysarx = arx_model(u,y);
+% sysarmax = armax_model(u,y);
 sysoe = oe_model(u,y);
-sysbj = bj_model(u,y);
+% sysbj = bj_model(u,y);
 
 % Kijk na hoe correct deze modellen gefit worden d.m.v. het fit rapport;
 
-arx_fit = sysarx.Report.Fit.FitPercent;
-armax_fit = sysarmax.Report.Fit.FitPercent;
+% arx_fit = sysarx.Report.Fit.FitPercent;
+% armax_fit = sysarmax.Report.Fit.FitPercent;
 oe_fit = sysoe.Report.Fit.FitPercent;
-bj_fit = sysbj.Report.Fit.FitPercent;
+% bj_fit = sysbj.Report.Fit.FitPercent;
 
 % Plot de verschillende opties
-figure()
-bar(1,arx_fit )
-hold on
-bar(2,armax_fit)
-hold on
-bar(3,oe_fit)
-hold on
-bar(4,bj_fit)
-title('Verschillende fit opties');
-ylabel('Procentuele fitting');
-legend('arx', 'armax', 'oe', 'bj');
-ylim([0 100]);
+% figure()
+% bar(1,arx_fit )
+% hold on
+% bar(2,armax_fit)
+% hold on
+% bar(3,oe_fit)
+% hold on
+% bar(4,bj_fit)
+% title('Verschillende fit opties');
+% ylabel('Procentuele fitting');
+% legend('arx', 'armax', 'oe', 'bj');
+% ylim([0 100]);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Valideren van model
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Simulatie doormiddel van het model
-[~,arx_fit_sim,~] = compare([y u],sysarx);
-[~,armax_fit_sim,~] = compare([y u],sysarmax);
+% [~,arx_fit_sim,~] = compare([y u],sysarx);
+% [~,armax_fit_sim,~] = compare([y u],sysarmax);
 [~,oe_fit_sim,~] = compare([y u],sysoe);
-[~,bj_fit_sim,~] = compare([y u],sysbj);
+% [~,bj_fit_sim,~] = compare([y u],sysbj);
 
 % Prediction doormiddel van het model
-[~,arx_fit_pre,~] = compare([y u],sysarx,1);
-[~,armax_fit_pre,~] = compare([y u],sysarmax,1);
+% [~,arx_fit_pre,~] = compare([y u],sysarx,1);
+% [~,armax_fit_pre,~] = compare([y u],sysarmax,1);
 [~,oe_fit_pre,~] = compare([y u],sysoe,1);
-[~,bj_fit_pre,~] = compare([y u],sysbj,1);
+% [~,bj_fit_pre,~] = compare([y u],sysbj,1);
 
 % Residual analyses
-[E_arx, R_arx] = resid([y u], sysarx);
-[E_armax, R_armax] = resid([y u], sysarmax);
+% [E_arx, R_arx] = resid([y u], sysarx);
+% [E_armax, R_armax] = resid([y u], sysarmax);
 [E_oe, R_oe] = resid([y u], sysoe);
-[E_bj, R_bj] = resid([y u], sysbj);
+% [E_bj, R_bj] = resid([y u], sysbj);
 save real_problem;
