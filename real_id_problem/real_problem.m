@@ -12,17 +12,17 @@ t = (0:L-1)*T;  % Tijdsvector
 
 
 % White noise
-% u = randn(1000,1);
+u = randn(1000,1);
 
 % Zero input signal
 % u = zeros(1000,1);
 
 % Colored noise
-sigma_u = 0.5;
-u = randn(1000,1);
-u = sigma_u*u;
-[b_butter, a_butter] = butter(4,0.2,'high');
-u = filter(b_butter,a_butter,u);
+% sigma_u = 0.5;
+% u = randn(1000,1);
+% u = sigma_u*u;
+% [b_butter, a_butter] = butter(4,0.2,'high');
+% u = filter(b_butter,a_butter,u);
 
 % Sinus wave
 % u = sin(2*pi*F*t');
