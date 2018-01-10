@@ -29,7 +29,7 @@ u = randn(1000,1);
 
 % Step function
 % u = ones(1000,1);
-%u(1) = 0;
+% u(1) = 0;
 
 % Impulse function
 % u = zeros(1000,1);
@@ -104,45 +104,45 @@ ylabel('|P1(f)|')
 xlim([0 100]);
 hold off
 
-% % Verschillende modellen
-sysarx = arx_model(u,y);
-sysarmax = armax_model(u,y);
-sysoe = oe_model(u,y);
-sysbj = bj_model(u,y);
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Valideren van model
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Simulatie en Predictie van het model, wanneer de timehorizon 1 is, gaat
-% het over een predictie, als er geen tijdshorizon is meegegeven over een
-% simulatie.
-
-opt = compareOptions('InitialCondition','e');
-figure
-compare([y u],sysarx,1,opt);
-figure
-compare([y u],sysarx, opt);
-figure
-compare([y u],sysarmax,1,opt);
-figure
-compare([y u],sysarmax, opt);
-figure
-compare([y u],sysoe,1,opt);
-figure
-compare([y u],sysoe, opt);
-figure
-compare([y u],sysbj,1,opt);
-figure
-compare([y u],sysbj, opt);
-
-% Residual analyses
-figure()
-data = iddata(y,u,1);
-resid(data,sysarx,'rx',sysarmax, 'gx',sysoe,'bx',sysbj, 'yx');
-
-figure()
-data2 = fft(data);
-resid(data2,sysarx,'rx',sysarmax, 'gx',sysoe,'bx',sysbj, 'yx');
+% % % Verschillende modellen
+% sysarx = arx_model(u,y);
+% sysarmax = armax_model(u,y);
+% sysoe = oe_model(u,y);
+% sysbj = bj_model(u,y);
+% 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % Valideren van model
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% % Simulatie en Predictie van het model, wanneer de timehorizon 1 is, gaat
+% % het over een predictie, als er geen tijdshorizon is meegegeven over een
+% % simulatie.
+% 
+% opt = compareOptions('InitialCondition','e');
+% figure
+% compare([y u],sysarx,1,opt);
+% figure
+% compare([y u],sysarx, opt);
+% figure
+% compare([y u],sysarmax,1,opt);
+% figure
+% compare([y u],sysarmax, opt);
+% figure
+% compare([y u],sysoe,1,opt);
+% figure
+% compare([y u],sysoe, opt);
+% figure
+% compare([y u],sysbj,1,opt);
+% figure
+% compare([y u],sysbj, opt);
+% 
+% % Residual analyses
+% figure()
+% data = iddata(y,u,1);
+% resid(data,sysarx,'rx',sysarmax, 'gx',sysoe,'bx',sysbj, 'yx');
+% 
+% figure()
+% data2 = fft(data);
+% resid(data2,sysarx,'rx',sysarmax, 'gx',sysoe,'bx',sysbj, 'yx');
 
 save real_problem;
