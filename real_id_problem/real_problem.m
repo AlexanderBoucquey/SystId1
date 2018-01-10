@@ -12,18 +12,17 @@ t = (0:L-1)*T;  % Tijdsvector
 
 
 % White noise
-u = randn(1000,1);
+% u = randn(1000,1);
 
 % Zero input signal
 % u = zeros(1000,1);
 
-
 % Colored noise
-% sigma_u = 0.5;
-% u = randn(1000,1);
-% u = sigma_u*u;
-% [b_butter, a_butter] = butter(4,0.2,'high');
-% u = filter(b_butter,a_butter,u);
+sigma_u = 0.5;
+u = randn(1000,1);
+u = sigma_u*u;
+[b_butter, a_butter] = butter(4,0.2,'high');
+u = filter(b_butter,a_butter,u);
 
 % Sinus wave
 % u = sin(2*pi*F*t');
@@ -62,13 +61,18 @@ title('Output signaal');
 % Preprocessing stap 1: Verwijderen pieken).
 y1 = pkshave(y, [25,35], 1);
 
-% Preprocessing stap 3: Laagdoorlaat filter om hoogfrequente ruis
+% Preprocessing stap 2: Laagdoorlaat filter om hoogfrequente ruis
 % te elimineren.
 b = ones(1,2)/2;
 y2 = filtfilt(b,1,y1);
 
-% Preprocessing stap 2: Verwijderen van trends.
+% Preprocessing stap 3: Verwijderen van trends.
 y = detrend(y2);
+
+% Preprocessing stap 4: Hoogdoorlaat filter om laagfrequente ruis 
+% te elimineren.
+[b,a] = butter(9,25/1000,'high');
+y = filter(b,a,y);
 
 % Bekijk de kwaliteit in mate van standaarddeviatie
 arx_std = std(y)/std(u);
@@ -100,7 +104,7 @@ ylabel('|P1(f)|')
 xlim([0 100]);
 hold off
 
-% Verschillende modellen
+% % Verschillende modellen
 sysarx = arx_model(u,y);
 sysarmax = armax_model(u,y);
 sysoe = oe_model(u,y);
