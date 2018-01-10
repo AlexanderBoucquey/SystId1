@@ -12,7 +12,7 @@ t = (0:L-1)*T;  % Tijdsvector
 
 
 % White noise
-% u = randn(1000,1);
+u = randn(1000,1);
 
 % Zero input signal
 % u = zeros(1000,1);
@@ -26,7 +26,7 @@ t = (0:L-1)*T;  % Tijdsvector
 % u = filter(b_butter,a_butter,u);
 
 % Sinus wave
-u = sin(2*pi*F*t');
+% u = sin(2*pi*F*t');
 
 % Step function
 % u = ones(1000,1);
@@ -101,98 +101,44 @@ xlim([0 100]);
 hold off
 
 % Verschillende modellen
-% sysarx = arx([y u],[200,50,50]);
 sysarx = arx_model(u,y);
-% sysarmax = armax_model(u,y);
+sysarmax = armax_model(u,y);
 sysoe = oe_model(u,y);
-% sysbj = bj_model(u,y);
+sysbj = bj_model(u,y);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Valideren van model
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Simulatiefit van het model
-[~,arx_fit_sim,~] = compare([y u],sysarx);
-% [~,armax_fit_sim,~] = compare([y u],sysarmax);
-% [~,oe_fit_sim,~] = compare([y u],sysoe);
-% [~,bj_fit_sim,~] = compare([y u],sysbj);
+% Simulatie en Predictie van het model, wanneer de timehorizon 1 is, gaat
+% het over een predictie, als er geen tijdshorizon is meegegeven over een
+% simulatie.
 
-% Plot de verschillende simulatie fits
-% figure()
-% bar(1,arx_fit_sim )
-% hold on
-% bar(2,armax_fit_sim)
-% hold on
-% bar(3,oe_fit_sim)
-% hold on
-% bar(4,bj_fit_sim)
-% title('Verschillende simulatie fit opties');
-% ylabel('Procentuele fitting');
-% legend('arx', 'armax', 'oe', 'bj');
-% ylim([0 100]);
-
-% Predictionfit van het model
-[~,arx_fit_pre,~] = compare([y u],sysarx,1);
 opt = compareOptions('InitialCondition','e');
 figure
 compare([y u],sysarx,1,opt);
 figure
 compare([y u],sysarx, opt);
 figure
+compare([y u],sysarmax,1,opt);
+figure
+compare([y u],sysarmax, opt);
+figure
 compare([y u],sysoe,1,opt);
 figure
 compare([y u],sysoe, opt);
-% [~,armax_fit_pre,~] = compare([y u],sysarmax,1);
-% [~,oe_fit_pre,~] = compare([y u],sysoe,1);
-% [~,bj_fit_pre,~] = compare([y u],sysbj,1);
-
-% Plot de verschillende prediction fits
-% figure()
-% bar(1,arx_fit_pre )
-% hold on
-% bar(2,armax_fit_pre)
-% hold on
-% bar(3,oe_fit_pre)
-% hold on
-% bar(4,bj_fit_pre)
-% title('Verschillende prediction fit opties');
-% ylabel('Procentuele fitting');
-% legend('arx', 'armax', 'oe', 'bj');
-% ylim([0 100]);
-% hold off
+figure
+compare([y u],sysbj,1,opt);
+figure
+compare([y u],sysbj, opt);
 
 % Residual analyses
-[E_arx, R_arx] = resid([y u], sysarx);
-% data2 = fft([y u]);
-% figure
-figure
+figure()
 data = iddata(y,u,1);
-resid(data,sysarx,'rx',sysoe,'bx');
-figure
-data2 = fft(data);
-
-resid(data2,sysarx,'rx',sysoe,'bx');
-
-% [E_armax, R_armax] = resid([y u], sysarmax);
-% [E_oe, R_oe] = resid([y u], sysoe);
-% [E_bj, R_bj] = resid([y u], sysbj);
-
-% Simulatie van het signaal
-u = randn(1000,1);
-y = exercise2(u);
-y_arx = sim(sysarx,u);
-figure
-y1 = pkshave(y, [25,35], 1);
-b = ones(1,5)/5;
-y2 = filtfilt(b,1,y1);
-
-y = detrend(y2);
-
-
+resid(data,sysarx,'rx',sysarmax, 'gx',sysoe,'bx',sysbj, 'yx');
 
 figure()
-plot(y(1:500));
-hold on
-plot(y_arx(1:500), 'r');
-legend('real output','arx');
+data2 = fft(data);
+resid(data2,sysarx,'rx',sysarmax, 'gx',sysoe,'bx',sysbj, 'yx');
+
 save real_problem;
