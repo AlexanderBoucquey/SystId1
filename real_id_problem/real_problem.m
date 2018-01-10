@@ -136,6 +136,8 @@ sysarx = arx_model(u,y);
 opt = compareOptions('InitialCondition','e');
 figure
 compare([y u],sysarx,1,opt);
+figure
+compare([y u],sysarx,opt);
 % [~,armax_fit_pre,~] = compare([y u],sysarmax,1);
 % [~,oe_fit_pre,~] = compare([y u],sysoe,1);
 % [~,bj_fit_pre,~] = compare([y u],sysbj,1);
@@ -154,12 +156,18 @@ compare([y u],sysarx,1,opt);
 % legend('arx', 'armax', 'oe', 'bj');
 % ylim([0 100]);
 % hold off
-figure
+
 % Residual analyses
 [E_arx, R_arx] = resid([y u], sysarx);
 % data2 = fft([y u]);
 % figure
-% resid([y u],sysarx,'rx');
+figure
+data = iddata(y,u,1);
+resid(data,sysarx,'rx');
+figure
+data2 = fft(data);
+
+resid(data2,sysarx,'rx');
 % [E_armax, R_armax] = resid([y u], sysarmax);
 % [E_oe, R_oe] = resid([y u], sysoe);
 % [E_bj, R_bj] = resid([y u], sysbj);
@@ -168,10 +176,11 @@ figure
 u = randn(1000,1);
 y = exercise2(u);
 y_arx = sim(sysarx,u);
+figure
 y1 = pkshave(y, [25,35], 1);
 b = ones(1,5)/5;
 y2 = filtfilt(b,1,y1);
-% figure
+
 y = detrend(y2);
 
 
