@@ -64,7 +64,7 @@ y1 = pkshave(y, [25,35], 1);
 
 % Preprocessing stap 3: Laagdoorlaat filter om hoogfrequente ruis
 % te elimineren.
-b = ones(1,5)/5;
+b = ones(1,2)/2;
 y2 = filtfilt(b,1,y1);
 
 % Preprocessing stap 2: Verwijderen van trends.
@@ -104,7 +104,7 @@ hold off
 % sysarx = arx([y u],[200,50,50]);
 sysarx = arx_model(u,y);
 % sysarmax = armax_model(u,y);
-% sysoe = oe_model(u,y);
+sysoe = oe_model(u,y);
 % sysbj = bj_model(u,y);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,7 +137,11 @@ opt = compareOptions('InitialCondition','e');
 figure
 compare([y u],sysarx,1,opt);
 figure
-compare([y u],sysarx,opt);
+compare([y u],sysarx, opt);
+figure
+compare([y u],sysoe,1,opt);
+figure
+compare([y u],sysoe, opt);
 % [~,armax_fit_pre,~] = compare([y u],sysarmax,1);
 % [~,oe_fit_pre,~] = compare([y u],sysoe,1);
 % [~,bj_fit_pre,~] = compare([y u],sysbj,1);
@@ -163,11 +167,12 @@ compare([y u],sysarx,opt);
 % figure
 figure
 data = iddata(y,u,1);
-resid(data,sysarx,'rx');
+resid(data,sysarx,'rx',sysoe,'bx');
 figure
 data2 = fft(data);
 
-resid(data2,sysarx,'rx');
+resid(data2,sysarx,'rx',sysoe,'bx');
+
 % [E_armax, R_armax] = resid([y u], sysarmax);
 % [E_oe, R_oe] = resid([y u], sysoe);
 % [E_bj, R_bj] = resid([y u], sysbj);
