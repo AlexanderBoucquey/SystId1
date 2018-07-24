@@ -1,7 +1,7 @@
 function [ sysarx ] = arx_model( u, y )
 % Probeer ideaal aantal parameters te berekenen mbv van het aic criterium
 % Initialisatie van aantal parameters
-na = [6 8 10];
+na = [6 8 10 12];
 nb = [10 15 20 25 30];
 nk = [1 2 4];
 

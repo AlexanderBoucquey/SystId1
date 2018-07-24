@@ -23,7 +23,7 @@ ul = ul(index);
 yl=exercise2(ul);
 yl1 = pkshave(yl, [25,35], 1);
 yl = detrend(yl1);
-shift=13;
+shift=12;
 yl=yl(shift+1:end);
 ul=ul(1:end-shift);
 sysarxl = arx_model(ul,yl);
@@ -42,7 +42,7 @@ yh=exercise2(uh);
 figure;
 yh1 = pkshave(yh, [25,35], 1);
 yh = detrend(yh1);
-shift=13;
+%shift=13;
 yh=yh(shift+1:end);
 uh=uh(1:end-shift);
 sysarxh = arx_model(uh,yh);
@@ -115,7 +115,7 @@ y1 = pkshave(y, [25,35], 1);
 % plot(y);
 % Preprocessing stap 3: Verwijderen van trends.
 y = detrend(y1);
-shift=13;
+%shift=13;
 y=y(shift+1:end);
 u=u(1:end-shift);
 
