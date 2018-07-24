@@ -1,10 +1,10 @@
 function [ sysbj ] = bj_model( u, y )
 % Probeer ideaal aantal parameters te berekenen mbv van het aic criterium
 % Initialisatie van aantal parameters
-nb = 6:12;
-nc = 6:12;
-nd = 6:12;
-nf = 6:12;
+nb = 6:2:12;
+nc = 6:2:12
+nd = 6:2:12
+nf = 6:2:12
 nk = [1 2 4];
 
 % Estimate BJ models with all possible combinations of chosen order ranges.

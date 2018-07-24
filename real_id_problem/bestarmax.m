@@ -44,7 +44,7 @@ yh=exercise2(uh);
 figure;
 yh1 = pkshave(yh, [25,35], 1);
 yh = detrend(yh1);
-shift=13;
+%shift=13;
 yh=yh(shift+1:end);
 uh=uh(1:end-shift);
 sysarxh = armax_model(uh,yh);
@@ -117,7 +117,7 @@ y1 = pkshave(y, [25,35], 1);
 % plot(y);
 % Preprocessing stap 3: Verwijderen van trends.
 y = detrend(y1);
-shift=14;
+%shift=14;
 y=y(shift+1:end);
 u=u(1:end-shift);
 figure()
