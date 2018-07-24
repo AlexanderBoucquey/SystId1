@@ -1,9 +1,9 @@
 function [ sysoe ] = oe_model( u, y)
 % Probeer ideaal aantal parameters te berekenen mbv van het aic criterium
 % Initialisatie van aantal parameters
-nf = [10 20 30 40];
-nb = [10 20 30 40];
-nk = [0 10 20 30 40];
+nf = [6 8 10 12];
+nb = [6 8 10 15 20 30];
+nk = [1 2 4 10];
 
 % Estimate OE models with all possible combinations of chosen order ranges.
 NN = struc(nf,nb,nk); 
